@@ -1,0 +1,37 @@
+services:
+  # 1. Database Module
+  db:
+    image: postgres:15-alpine
+    container_name: snowflake_db
+    restart: always
+    env_file:
+      - secret.yml
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # 2. Backend Module
+  backend:
+    build: ./backend
+    container_name: snowflake_api
+    restart: on-failure
+    depends_on:
+      - db
+    env_file:
+      - secret.yml
+    ports:
+      - "8000:8000"
+
+  # 3. Frontend Module
+  frontend:
+    build: ./frontend
+    container_name: snowflake_ui
+    restart: on-failure
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
