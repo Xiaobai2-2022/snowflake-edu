@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.v1.api import api_router
+
 # Assuming you create a centralized router in app/api/v1/api.py
 # and a config file in app/core/config.py
 # from app.api.v1.api import api_router
@@ -24,7 +26,7 @@ app.add_middleware(
 )
 
 # Include the main API router
-# app.include_router(api_router, prefix="/api/v1") # Uncomment once routers are created
+app.include_router(api_router, prefix="/api/v1")
 
 @app.get("/", tags=["Health Check"])
 async def root():
@@ -37,9 +39,9 @@ async def root():
         "docs_url": "/docs"
     }
 
-@app.get("/hello/{name}", tags=["Testing"])
-async def say_hello(name: str):
-    """
-    A quick test endpoint to see how path parameters work.
-    """
-    return {"message": f"Hello {name}, your API is working!"}
+# @app.get("/hello/{name}", tags=["Testing"])
+# async def say_hello(name: str):
+#     """
+#     A quick test endpoint to see how path parameters work.
+#     """
+#     return {"message": f"Hello {name}, your API is working!"}

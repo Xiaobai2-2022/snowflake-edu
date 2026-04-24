@@ -27,3 +27,17 @@ git clone https://github.com/Xiaobai2-2022/snowflake-edu
 docker compose up --build
 ```
 
+## Debug
+
+### Debugging PGSQL
+
+```shell
+docker exec -it snowflake_db psql -U <POSTGRES_USER> -d <POSTGRES_DB>
+```
+
+```postgresql
+\dt
+```
+### Debugging Backend
+
+Using link `http://localhost:8000/docs`

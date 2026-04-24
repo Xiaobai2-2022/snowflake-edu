@@ -41,3 +41,11 @@ CREATE TABLE IF NOT EXISTS user_roles (
     role_level roles,
     PRIMARY KEY (user_id, topic_id, role_level)
 );
+
+-- 6. User Complete Topic
+CREATE TABLE IF NOT EXISTS user_completed_topics (
+    user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,
+    topic_id UUID REFERENCES topics(topic_id) ON DELETE CASCADE,
+
+    PRIMARY KEY (user_id, topic_id)
+);
