@@ -11,7 +11,6 @@ from app.schemas import TopicNodeResponse
 
 router = APIRouter()
 
-
 @router.get("/{topic_id}/learning-path", response_model=TopicNodeResponse)
 def get_custom_learning_path(
         topic_id: UUID,

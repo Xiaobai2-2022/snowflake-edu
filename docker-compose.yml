@@ -23,15 +23,20 @@ services:
     ports:
       - "8000:8000"
 
-#  # 3. Frontend Module
-#  frontend:
-#    build: ./frontend
-#    container_name: snowflake_ui
-#    restart: on-failure
-#    ports:
-#      - "3000:3000"
-#    depends_on:
-#      - backend
+# 3. Frontend Module
+  frontend:
+    build: ./frontend
+    container_name: snowflake_ui
+    restart: on-failure
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
 
 volumes:
   pgdata:

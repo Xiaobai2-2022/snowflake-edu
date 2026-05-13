@@ -3,7 +3,7 @@ from fastapi import APIRouter
 
 # Import your individual endpoint routers
 from app.api.v1.endpoints import topics
-# from app.api.v1.endpoints import users, roles  # You will create these later
+# from app.api.v1.endpoints import users, roles
 
 # This is your central router for all v1 endpoints
 api_router = APIRouter()

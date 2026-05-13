@@ -41,3 +41,7 @@ docker exec -it snowflake_db psql -U <POSTGRES_USER> -d <POSTGRES_DB>
 ### Debugging Backend
 
 Using link `http://localhost:8000/docs`
+
+## Project Pitch Document
+
+`https://www.overleaf.com/read/dbwqtvwnwjqw#750523`

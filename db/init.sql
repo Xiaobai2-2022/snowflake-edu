@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS topic_prerequisites (
     PRIMARY KEY (topic_id, prerequisite_id),
     CONSTRAINT no_self_prereq CHECK (topic_id <> prerequisite_id)
 );
-
+docker run -it --rm -v "$(pwd)/frontend:/app" -w /app node:20-slim npx create-vite@latest . --template react
 -- 4. Roles ENUM
 DO $$ BEGIN
     CREATE TYPE roles AS ENUM (
@@ -48,4 +48,38 @@ CREATE TABLE IF NOT EXISTS user_completed_topics (
     topic_id UUID REFERENCES topics(topic_id) ON DELETE CASCADE,
 
     PRIMARY KEY (user_id, topic_id)
+);
+
+-- 7. Questions
+CREATE TABLE IF NOT EXISTS questions (
+    question_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    question_name TEXT NOT NULL,
+    question_difficulty SMALLINT NOT NULL,
+    topic_url TEXT,
+    primary_topic UUID REFERENCES topics(topic_id) ON DELETE CASCADE
+);
+
+-- 8. Question Secondary Topics
+CREATE TABLE IF NOT EXISTS question_topics (
+    question_id UUID REFERENCES questions(question_id) ON DELETE CASCADE,
+    secondary_topic UUID REFERENCES topics(topic_id) ON DELETE CASCADE,
+
+    PRIMARY KEY (question_id, secondary_topic)
+);
+
+-- 9. Question Hints
+CREATE TABLE IF NOT EXISTS question_hints (
+    hint_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    question_id UUID REFERENCES questions(question_id) ON DELETE CASCADE,
+    hint_number SMALLINT NOT NULL,
+    hint_url TEXT
+);
+
+-- 10. Submissions
+CREATE TABLE IF NOT EXISTS submissions (
+    submission_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,
+    question_id UUID REFERENCES questions(question_id) ON DELETE CASCADE,
+    submission_url TEXT,
+    submission_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
