@@ -1,0 +1,70 @@
+/* Base Container */
+.topic-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #1f2937;
+}
+
+.topic-meta {
+  margin-bottom: 2rem;
+}
+
+.badge {
+  background-color: #e0e7ff;
+  color: #4338ca;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Snowflake JSON Classes */
+.Sn0wf1ake-head {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.Sn0wf1ake-txt {
+  font-size: 1.125rem;
+  line-height: 1.75;
+  margin-bottom: 2rem;
+  color: #4b5563;
+}
+
+.Sn0wf1ake-exp {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4f46e5;
+  margin-bottom: 1rem;
+}
+
+.Sn0wf1ake-h5-embed {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+/* Flexbox Layout for the "contentSplit" array */
+.flex-row-split {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.split-column {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mobile Responsiveness for the split columns */
+@media (max-width: 768px) {
+  .flex-row-split {
+    flex-direction: column;
+  }
+}

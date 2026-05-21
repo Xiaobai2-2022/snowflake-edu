@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Addition Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <div id="auth-overlay">
+        <h2>Authenticating...</h2>
+        <p>Waiting for platform authorization.</p>
+    </div>
+
+    <div class="app-container">
+        <div class="equation-display">
+            <span class="num-a" id="valA">1</span>
+            <span>+</span>
+            <span class="num-b" id="valB">2</span>
+            <span>=</span>
+            <span class="sum" id="valSum">3</span>
+        </div>
+
+        <div class="visualizer">
+            <div class="dot-group" id="groupA"></div>
+            <div class="operator">+</div>
+            <div class="dot-group" id="groupB"></div>
+        </div>
+
+        <div class="controls">
+            <div class="slider-group">
+                <span class="slider-label a">Number 1</span>
+                <input type="range" id="sliderA" min="0" max="10" value="1">
+            </div>
+            <div class="slider-group">
+                <span class="slider-label b">Number 2</span>
+                <input type="range" id="sliderB" min="0" max="10" value="2">
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -8,9 +8,9 @@ CREATE TABLE IF NOT EXISTS users (
 -- 2. Topics
 CREATE TABLE IF NOT EXISTS topics (
     topic_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    topic_name TEXT NOT NULL,
+    topic_name TEXT UNIQUE NOT NULL,
     topic_description TEXT NOT NULL,
-    topic_url TEXT
+    topic_json TEXT
 );
 
 -- 3. Topic Prerequisites
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS topic_prerequisites (
     PRIMARY KEY (topic_id, prerequisite_id),
     CONSTRAINT no_self_prereq CHECK (topic_id <> prerequisite_id)
 );
-docker run -it --rm -v "$(pwd)/frontend:/app" -w /app node:20-slim npx create-vite@latest . --template react
+
 -- 4. Roles ENUM
 DO $$ BEGIN
     CREATE TYPE roles AS ENUM (
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS questions (
     question_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     question_name TEXT NOT NULL,
     question_difficulty SMALLINT NOT NULL,
-    topic_url TEXT,
+    topic_json TEXT,
     primary_topic UUID REFERENCES topics(topic_id) ON DELETE CASCADE
 );
 

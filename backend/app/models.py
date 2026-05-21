@@ -52,7 +52,7 @@ class Topic(Base):
     topic_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     topic_name = Column(String, nullable=False)
     topic_description = Column(String, nullable=False)
-    topic_url = Column(String, nullable=True)
+    topic_json = Column(String, nullable=True)
 
     prerequisites = relationship(
         "Topic",
