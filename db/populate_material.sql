@@ -3,7 +3,7 @@
 INSERT INTO topics (topic_name, topic_description, topic_json)
 VALUES
 ('Addition',
-'Adding single digits.',
+'Adding up to 10 + 10.',
  '{
     "topicName": "Addition",
     "dependencies": [
