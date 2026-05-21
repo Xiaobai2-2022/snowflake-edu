@@ -48,13 +48,13 @@ sliderB.addEventListener('input', (e) => {
 
 updateUI();
 
-// const authOverlay = document.getElementById('auth-overlay');
-// authOverlay.style.display = 'flex'; // Lock app initially
-//
-// window.addEventListener('message', (event) => {
-//     // Replace '*' with your actual domain in production for security
-//     if (event.data && event.data.type === 'AUTH_SUCCESS') {
-//         authOverlay.style.display = 'none'; // Unlock app
-//         console.log("H5 Module Authorized.");
-//     }
-// });
+const authOverlay = document.getElementById('auth-overlay');
+authOverlay.style.display = 'flex'; // Lock app initially
+
+window.addEventListener('message', (event) => {
+    // Replace '*' with your actual domain in production for security
+    if (event.data && event.data.type === 'AUTH_SUCCESS') {
+        authOverlay.style.display = 'none'; // Unlock app
+        console.log("H5 Module Authorized.");
+    }
+});
