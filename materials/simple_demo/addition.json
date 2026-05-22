@@ -19,6 +19,10 @@
                         {
                             "contentText": "Example 1:",
                             "css-class": "Sn0wf1ake-exp"
+                        },
+                        {
+                            "contentText": "In this example, you can try out how to add numbers between 0 to 10 by dragging the slide bar.",
+                            "css-class": "Sn0wf1ake-txt"
                         }
                     ],
                     "width": 1
@@ -28,7 +32,7 @@
                         {
                             "h5-uploaded-module": {
                                 "moduleId": "addition_example_1",
-                                "src": "https://localhost:8080/modules/addition_example_1/index.html",
+                                "src": "http://localhost:8080/modules/addition_example_1/index.html",
                                 "css-class": "Sn0wf1ake-h5-embed",
                                 "config": {
                                     "height": "400px",

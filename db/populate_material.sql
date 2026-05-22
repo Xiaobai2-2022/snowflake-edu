@@ -25,6 +25,10 @@ VALUES
                         {
                             "contentText": "Example 1:",
                             "css-class": "Sn0wf1ake-exp"
+                        },
+                        {
+                            "contentText": "In this example, you can try out how to add numbers between 0 to 10 by dragging the slide bar.",
+                            "css-class": "Sn0wf1ake-txt"
                         }
                     ],
                     "width": 1
