@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Multiplication Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <div id="auth-overlay">
+        <h2>Authenticating...</h2>
+        <p>Waiting for platform authorization.</p>
+    </div>
+
+    <div class="app-container">
+        <div class="equation-display">
+            <span class="num-a" id="valA">1</span>
+            <span>&times;</span>
+            <span class="num-b" id="valB">2</span>
+            <span>=</span>
+            <span class="product" id="valProduct">2</span>
+        </div>
+
+        <div class="visualizer">
+            <div class="dot-grid" id="dotGrid"></div>
+        </div>
+
+        <div class="controls">
+            <div class="slider-group">
+                <span class="slider-label a">Rows</span>
+                <input type="range" id="sliderA" min="0" max="10" value="1">
+            </div>
+            <div class="slider-group">
+                <span class="slider-label b">Columns</span>
+                <input type="range" id="sliderB" min="0" max="10" value="2">
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

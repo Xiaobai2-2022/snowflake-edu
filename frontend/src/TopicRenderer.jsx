@@ -1,14 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import './TopicRenderer.css'; // We will define the CSS below
+import React, { useEffect, useRef, useState } from 'react';
+import './TopicRenderer.css';
 
-// A helper component to render individual blocks
 const ContentBlock = ({ block }) => {
-  // 1. Handle standard text blocks
   if (block.contentText) {
     return <div className={block["css-class"]}>{block.contentText}</div>;
   }
 
-  // 2. Handle split columns (Side-by-Side content)
   if (block.contentSplit) {
     return (
       <div className="flex-row-split">
@@ -18,7 +15,6 @@ const ContentBlock = ({ block }) => {
             className="split-column"
             style={{ flex: column.width }}
           >
-            {/* Recursively render whatever is inside this column */}
             {column.contentPage.map((subBlock, subIndex) => (
               <ContentBlock key={subIndex} block={subBlock} />
             ))}
@@ -28,19 +24,17 @@ const ContentBlock = ({ block }) => {
     );
   }
 
-  // 3. Handle the H5 Uploaded Module (The Iframe)
   if (block["h5-uploaded-module"]) {
     const moduleInfo = block["h5-uploaded-module"];
     const iframeRef = useRef(null);
 
-    // This handles the authentication handshake we discussed
     useEffect(() => {
       if (moduleInfo.config.requiresAuth && iframeRef.current) {
-        // Wait for the iframe to load before sending the auth token
+        // Because of key={topicId} in parent, this will safely run on every new topic navigation
         iframeRef.current.onload = () => {
           iframeRef.current.contentWindow.postMessage(
             { type: 'AUTH_SUCCESS' },
-            '*' // In production, replace '*' with your actual NGINX domain
+            '*'
           );
         };
       }
@@ -65,21 +59,91 @@ const ContentBlock = ({ block }) => {
     );
   }
 
-  return null; // Fallback for unknown block types
+  return null;
 };
 
-// The Main Component
-const TopicRenderer = ({ topicData }) => {
+const TopicRenderer = ({
+  topicData,
+  onNavigate,
+  // ADDED: Default fallback function to prevent the TypeError crash
+  checkTopicExists = async () => {
+    console.warn("Warning: checkTopicExists prop was not provided to TopicRenderer.");
+    return false;
+  }
+}) => {
+  const [missingTopic, setMissingTopic] = useState(null);
+
+  // Track exactly which dependency is being checked, rather than a single global boolean
+  const [checkingDep, setCheckingDep] = useState(null);
+
   if (!topicData) return <div>Loading...</div>;
+
+  const handleDependencyClick = async (dep) => {
+    console.log("Attempting to navigate to:", dep); // Debug
+    setCheckingDep(dep);
+    try {
+      // ADDED: Extra safety check just in case a non-function (like null) was explicitly passed
+      if (typeof checkTopicExists !== 'function') {
+        throw new Error("checkTopicExists must be a function");
+      }
+
+      const exists = await checkTopicExists(dep);
+      console.log("Topic existence check result:", exists); // Debug
+      if (exists) {
+        onNavigate(dep);
+      } else {
+        setMissingTopic(dep);
+      }
+    } catch (error) {
+      console.error("Error verifying topic:", error);
+      setMissingTopic(dep);
+    } finally {
+      setCheckingDep(null);
+    }
+  };
+
+
+  if (missingTopic) {
+    return (
+      <div className="missing-topic-container">
+        <h2>Independent Study Required</h2>
+        <p>
+          The topic <strong>{missingTopic}</strong> needs to be studied by the student individually as it is not currently available in the system.
+        </p>
+        <button
+          className="btn-go-back"
+          onClick={() => setMissingTopic(null)}
+        >
+          ← Go Back to {topicData.topicName}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="topic-container">
-      {/* Optional: Render Topic Name and Dependencies */}
-      <div className="topic-meta">
-        <span className="badge">Dependencies: {topicData.dependencies.join(', ')}</span>
-      </div>
+      {topicData.dependencies && topicData.dependencies.length > 0 && (
+        <div className="topic-meta">
+          <h3>Prerequisites:</h3>
+          <div className="dependency-buttons">
+            {topicData.dependencies.map((dep, index) => {
+              const isThisChecking = checkingDep === dep;
 
-      {/* Loop through the main contentPage array */}
+              return (
+                <button
+                  key={index}
+                  className="btn-dependency"
+                  onClick={() => handleDependencyClick(dep)}
+                  disabled={checkingDep !== null}
+                >
+                  {isThisChecking ? 'Checking...' : dep}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       <div className="topic-content">
         {topicData.contentPage.map((block, index) => (
           <ContentBlock key={index} block={block} />

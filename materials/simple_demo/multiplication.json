@@ -1,0 +1,49 @@
+{
+    "topicName": "Multiplication",
+    "dependencies": [
+        "Counting Numbers", "Addition"
+    ],
+    "contentPage": [
+        {
+            "contentText": "Multiplication",
+            "css-class": "Sn0wf1ake-head"
+        },
+        {
+            "contentText": "Multiplication can be as simple as 1 * 1, or as complex as 5678 * 32456.",
+            "css-class": "Sn0wf1ake-txt"
+        },
+        {
+            "contentSplit": [
+                {
+                    "contentPage" : [
+                        {
+                            "contentText": "Example 1:",
+                            "css-class": "Sn0wf1ake-exp"
+                        },
+                        {
+                            "contentText": "In this example, you can try out how to multiply numbers between 0 to 10 by dragging the slide bar.",
+                            "css-class": "Sn0wf1ake-txt"
+                        }
+                    ],
+                    "width": 1
+                },
+                {
+                    "contentPage": [
+                        {
+                            "h5-uploaded-module": {
+                                "moduleId": "multiplication_example_1",
+                                "src": "http://localhost:8080/modules/multiplication_example_1/index.html",
+                                "css-class": "Sn0wf1ake-h5-embed",
+                                "config": {
+                                    "height": "400px",
+                                    "requiresAuth": true
+                                }
+                            }
+                        }
+                    ],
+                    "width": 1
+                }
+            ]
+        }
+    ]
+}
