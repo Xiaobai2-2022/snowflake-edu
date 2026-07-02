@@ -30,7 +30,6 @@ const ContentBlock = ({ block }) => {
 
     useEffect(() => {
       if (moduleInfo.config.requiresAuth && iframeRef.current) {
-        // Because of key={topicId} in parent, this will safely run on every new topic navigation
         iframeRef.current.onload = () => {
           iframeRef.current.contentWindow.postMessage(
             { type: 'AUTH_SUCCESS' },
@@ -65,30 +64,57 @@ const ContentBlock = ({ block }) => {
 const TopicRenderer = ({
   topicData,
   onNavigate,
-  // ADDED: Default fallback function to prevent the TypeError crash
   checkTopicExists = async () => {
     console.warn("Warning: checkTopicExists prop was not provided to TopicRenderer.");
     return false;
   }
 }) => {
   const [missingTopic, setMissingTopic] = useState(null);
-
-  // Track exactly which dependency is being checked, rather than a single global boolean
   const [checkingDep, setCheckingDep] = useState(null);
+
+  const [postReqs, setPostReqs] = useState([]);
+  const [loadingPostReqs, setLoadingPostReqs] = useState(true);
+
+  // NEW USEEFFECT TO FETCH THE API
+  useEffect(() => {
+    const fetchPostReqs = async () => {
+      if (!topicData || !topicData.topicName) return;
+
+      setLoadingPostReqs(true);
+      try {
+        // IMPORTANT: Update this URL to match your actual API path and base URL!
+        // If you use Axios normally, you can swap this fetch out for an axios.get()
+        const response = await fetch(`http://localhost:8000/api/v1/topics/${topicData.topicName}/postreq`);
+
+        if (response.ok) {
+          const data = await response.json();
+          setPostReqs(data);
+        } else {
+          console.error("Failed to fetch post-reqs");
+          setPostReqs([]);
+        }
+      } catch (error) {
+        console.error("Error fetching post-reqs:", error);
+        setPostReqs([]);
+      } finally {
+        setLoadingPostReqs(false);
+      }
+    };
+
+    fetchPostReqs();
+  }, [topicData?.topicName]); // Re-run this whenever the topicName changes
+
 
   if (!topicData) return <div>Loading...</div>;
 
   const handleDependencyClick = async (dep) => {
-    console.log("Attempting to navigate to:", dep); // Debug
     setCheckingDep(dep);
     try {
-      // ADDED: Extra safety check just in case a non-function (like null) was explicitly passed
       if (typeof checkTopicExists !== 'function') {
         throw new Error("checkTopicExists must be a function");
       }
 
       const exists = await checkTopicExists(dep);
-      console.log("Topic existence check result:", exists); // Debug
       if (exists) {
         onNavigate(dep);
       } else {
@@ -101,7 +127,6 @@ const TopicRenderer = ({
       setCheckingDep(null);
     }
   };
-
 
   if (missingTopic) {
     return (
@@ -148,6 +173,33 @@ const TopicRenderer = ({
         {topicData.contentPage.map((block, index) => (
           <ContentBlock key={index} block={block} />
         ))}
+      </div>
+
+      {/* POST-REQS SECTION USING OUR NEW FETCHED STATE */}
+      <div className="topic-meta">
+        <h3>Leads to:</h3>
+        {loadingPostReqs ? (
+          <p>Loading next topics...</p>
+        ) : postReqs && postReqs.length > 0 ? (
+          <div className="dependency-buttons">
+            {postReqs.map((post_req, index) => {
+              const isThisChecking = checkingDep === post_req;
+
+              return (
+                <button
+                  key={`post-${index}`}
+                  className="btn-dependency"
+                  onClick={() => handleDependencyClick(post_req)}
+                  disabled={checkingDep !== null}
+                >
+                  {isThisChecking ? 'Checking...' : post_req}
+                </button>
+              );
+            })}
+          </div>
+        ) : (
+          <h4>Congratulation, this is the final topic.</h4>
+        )}
       </div>
     </div>
   );

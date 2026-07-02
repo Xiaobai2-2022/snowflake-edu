@@ -9,7 +9,7 @@ from app.api.v1.endpoints import topics_map, topics
 api_router = APIRouter()
 
 # Attach the feature routers to the central hub
-api_router.include_router(topics_map.router, prefix="/topic_map", tags=["Topics (DAG)"])
+# api_router.include_router(topics_map.router, prefix="/topic_map", tags=["Topics (DAG)"])
 api_router.include_router(topics.router, prefix="/topics", tags=["Topics"])
 # api_router.include_router(users.router, prefix="/users", tags=["Users"])
 # api_router.include_router(roles.router, prefix="/roles", tags=["RBAC"])

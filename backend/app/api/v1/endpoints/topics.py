@@ -24,3 +24,15 @@ def get_topic(_topic_name_: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail="Corrupted JSON data in database")
 
     return topic_data
+
+@router.get("/{_topic_name_}/postreq")
+def get_topic_post_req(_topic_name_: str, db: Session = Depends(get_db)):
+    """
+    Get a topic's post requirement
+    """
+    topic = db.query(Topic).filter(func.lower(Topic.topic_name) == _topic_name_.lower()).first()
+
+    if not topic:
+        raise HTTPException(status_code=404, detail="Topic not found")
+
+    return [post_req.topic_name for post_req in topic.is_prerequisite_for]
